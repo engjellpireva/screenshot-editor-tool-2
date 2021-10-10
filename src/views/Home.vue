@@ -3,8 +3,36 @@
     <b-container style="background: #62676c" fluid>
       <b-row>
         <b-col class="p-0 bg-dark min-vh-100" cols="12" md="3">
-          <div class="sidebar-top-text py-4 px-3 text-white">
+          <div
+            class="
+              sidebar-top-text
+              d-flex
+              justify-content-between
+              py-4
+              px-3
+              text-white
+            "
+          >
             <h3 class="my-auto"><strong>Screenshot Editor</strong></h3>
+            <img
+              src="../assets/discord.png"
+              class="my-auto"
+              alt="Discord"
+              style="cursor: pointer"
+              width="40"
+              height="32"
+              @click="showingDiscord = !showingDiscord"
+            />
+            <iframe
+              v-if="showingDiscord"
+              class="position-absolute"
+              src="https://discord.com/widget?id=857749894957498368&theme=dark"
+              width="350"
+              height="500"
+              allowtransparency="true"
+              frameborder="0"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            ></iframe>
           </div>
           <div class="d-flex px-4 mt-4 justify-content-between">
             <router-link to="/" class="text-white text-decoration-none"
@@ -292,6 +320,7 @@ export default {
       characterName: "",
       image: "",
       blackAndWhite: 0,
+      showingDiscord: false,
     };
   },
   computed: {
