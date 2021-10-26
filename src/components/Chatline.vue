@@ -56,7 +56,7 @@ export default {
       if (input.includes("You paid")) return "color-paid";
       if (input.includes("You gave")) return "color-paid";
       if (input.includes("You received")) return "color-paid";
-      if (input.includes("[NEWS])) return "color-news";
+      if (input.includes("[NEWS]")) return "color-news";
       if (
         input.includes("(cellphone):") &&
         input.startsWith(this.characterName)
