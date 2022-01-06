@@ -7,7 +7,6 @@
     @drop.prevent="drop($event)"
   >
     <img :src="imageSource" v-if="imageSource" />
-
     <h1 class="text-center text-uppercase text-secondary" v-if="wrongFile">
       Wrong file type
     </h1>
@@ -17,23 +16,27 @@
     >
       Drop an image
     </h1>
-    <div
-      :class="blackBg ? 'bg-black w-100 box-input' : 'w-100 box-input'"
-      class="position-absolute col-12"
-      :style="fontStyles"
-    >
-      <Chatline
-        v-for="line in input.split('\n')"
-        :characterName="characterName"
-        :key="line"
-        >{{ line }}</Chatline
+    <drag-it-dude :class="blackBg && 'position-relative'">
+      <div
+        :class="blackBg ? 'bg-black w-100 box-input' : 'w-100 box-input'"
+        class="position-relative col-12"
+        :style="fontStyles"
       >
-    </div>
+        <Chatline
+          v-for="line in input.split('\n')"
+          :characterName="characterName"
+          :key="line"
+          >{{ line }}</Chatline
+        >
+      </div>
+    </drag-it-dude>
   </div>
 </template>
 
 <script>
 import Chatline from "./Chatline.vue";
+import DragItDude from "vue-drag-it-dude";
+
 export default {
   name: "DropAnImage",
   data() {
@@ -41,6 +44,7 @@ export default {
       isDragging: false,
       wrongFile: false,
       imageSource: null,
+      scale: 2,
     };
   },
   props: {
@@ -83,10 +87,12 @@ export default {
         }
       }
     },
+
     onRequestUploadFiles() {},
   },
   components: {
     Chatline,
+    DragItDude,
   },
 };
 </script>

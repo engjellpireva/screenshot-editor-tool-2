@@ -106,6 +106,12 @@
                 </button>
                 <button
                   class="btn btn-secondary rounded-0 w-100 ms-2"
+                  @click="fontSize = 1.4"
+                >
+                  -2.90
+                </button>
+                <button
+                  class="btn btn-secondary rounded-0 w-100 ms-2"
                   @click="fontSize = 1.63"
                 >
                   -2
@@ -266,6 +272,8 @@
           <div
             class="box-container text-white position-relative"
             :style="styles"
+            :myWidth="width"
+            :myHeight="height"
             ref="image"
           >
             <Dropzone
@@ -338,6 +346,8 @@ export default {
         fontWeight: "bold",
         padding: this.padding + "vh",
         lineHeight: this.fontSpacing,
+        cursor: "grab",
+        userSelect: "none",
       };
     },
   },
