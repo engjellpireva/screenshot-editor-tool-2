@@ -106,7 +106,7 @@
                 </button>
                 <button
                   class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="fontSize = 1.4"
+                  @click="fontSize = 1.36"
                 >
                   -2.90
                 </button>
