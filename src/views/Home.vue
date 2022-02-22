@@ -16,11 +16,10 @@
             <h3 class="my-auto"><strong>Screenshot Editor</strong></h3>
             <img
               src="../assets/discord.png"
-              class="my-auto"
+              class="my-auto img-fluid object-cover"
               alt="Discord"
               style="cursor: pointer"
               width="40"
-              height="32"
               @click="showingDiscord = !showingDiscord"
             />
             <iframe
@@ -35,38 +34,19 @@
             ></iframe>
           </div>
           <div class="d-flex px-4 mt-4 justify-content-between">
-            <router-link to="/" class="text-white text-decoration-none"
-              ><p
-                :class="tab === 1 && 'border-bottom border-2'"
-                @click="tab = 1"
-              >
-                General
-              </p></router-link
+            <span
+              role="button"
+              v-for="link in tabs"
+              :key="link.id"
+              class="text-white text-decoration-none"
             >
-            <router-link to="/" class="text-white text-decoration-none"
-              ><p
-                :class="tab === 2 && 'border-bottom border-2'"
-                @click="tab = 2"
+              <p
+                :class="tab === link.id && 'border-bottom border-2'"
+                @click="tab = link.id"
               >
-                Parsing
-              </p></router-link
-            >
-            <router-link to="/" class="text-white text-decoration-none"
-              ><p
-                :class="tab === 3 && 'border-bottom border-2'"
-                @click="tab = 3"
-              >
-                Image
-              </p></router-link
-            >
-            <router-link to="/" class="text-white text-decoration-none"
-              ><p
-                :class="tab === 4 && 'border-bottom border-2'"
-                @click="tab = 4"
-              >
-                Filters
-              </p></router-link
-            >
+                {{ link.name }}
+              </p>
+            </span>
           </div>
           <section id="tab-1" v-if="tab === 1">
             <div class="px-4 mt-4">
@@ -75,12 +55,14 @@
                 <button
                   class="btn btn-secondary rounded-0 w-100"
                   @click="blackBg = true"
+                  :class="blackBg && 'btn-warning'"
                 >
                   Yes
                 </button>
                 <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
+                  class="btn btn-secondary rounded-0 w-100"
                   @click="blackBg = false"
+                  :class="!blackBg && 'btn-warning'"
                 >
                   No
                 </button>
@@ -97,72 +79,45 @@
                 max="5.33"
                 step="0.2"
               />
-              <div class="d-flex justify-content-between">
-                <button
-                  class="btn btn-secondary rounded-0 w-100"
-                  @click="fontSize = 1.33"
+              <div class="d-flex">
+                <span
+                  class="d-flex justify-content-between w-100"
+                  v-for="size in fontSizes"
+                  :key="size.id"
                 >
-                  -3
-                </button>
-                <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="fontSize = 1.36"
-                >
-                  -2.90
-                </button>
-                <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="fontSize = 1.63"
-                >
-                  -2
-                </button>
-                <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="fontSize = 1.93"
-                >
-                  -1
-                </button>
-                <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="fontSize = 2.1"
-                >
-                  0
-                </button>
+                  <button
+                    @click="fontSize = size.fontSize"
+                    :class="
+                      fontSize == size.fontSize
+                        ? 'btn btn-warning rounded-0 w-100 text-dark'
+                        : 'btn btn-secondary rounded-0 w-100 text-white'
+                    "
+                  >
+                    {{ size.size }}
+                  </button>
+                </span>
               </div>
             </div>
             <div class="px-4 mt-4">
               <h6 class="text-white">Padding</h6>
-              <div class="d-flex justify-content-between">
-                <button
-                  class="btn btn-secondary rounded-0 w-100"
-                  @click="padding = 1"
+              <div class="d-flex">
+                <span
+                  v-for="currentPadding in paddings"
+                  :key="currentPadding.id"
+                  class="d-flex justify-content-between w-100"
                 >
-                  1
-                </button>
-                <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="padding = 2"
-                >
-                  2
-                </button>
-                <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="padding = 3"
-                >
-                  3
-                </button>
-                <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="padding = 4"
-                >
-                  4
-                </button>
-                <button
-                  class="btn btn-secondary rounded-0 w-100 ms-2"
-                  @click="padding = 5"
-                >
-                  5
-                </button>
+                  <button
+                    class="btn btn-secondary rounded-0 w-100"
+                    @click="padding = currentPadding.padding"
+                    :class="
+                      padding == currentPadding.padding
+                        ? 'btn btn-warning rounded-0 w-100 text-dark'
+                        : 'btn btn-secondary rounded-0 w-100 text-white'
+                    "
+                  >
+                    {{ currentPadding.value }}
+                  </button>
+                </span>
               </div>
             </div>
             <div class="px-4 mt-4">
@@ -252,21 +207,26 @@
             </div>
           </section>
 
-          <div
+          <button
             class="
+              btn
+              rounded-0
               col-12 col-md-3
               position-absolute
               download-button
-              p-0
-              bg-secondary
-              p-4
-              text-white text-center
+              p-0 p-4
+              text-center
               fw-bold
             "
             @click="exportToPng"
+            :class="
+              !input
+                ? 'btn-secondary text-white disabled'
+                : 'btn-warning text-dark'
+            "
           >
             Download Screenshot
-          </div>
+          </button>
         </b-col>
         <b-col class="col-8 py-2">
           <div
@@ -290,6 +250,14 @@
 </template>
 
 <style>
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+input,
+textarea {
+  outline: none !important;
+}
 .sidebar-top-text {
   background: #4d4e50;
 }
@@ -313,6 +281,7 @@
 import Dropzone from "../components/Dropzone.vue";
 import { saveAs } from "file-saver";
 import domtoimage from "dom-to-image";
+
 export default {
   name: "Home",
   data: () => {
@@ -329,6 +298,78 @@ export default {
       image: "",
       blackAndWhite: 0,
       showingDiscord: false,
+      paddings: [
+        {
+          id: 1,
+          padding: 1,
+          value: "1",
+        },
+        {
+          id: 2,
+          padding: 2,
+          value: "2",
+        },
+        {
+          id: 3,
+          padding: 3,
+          value: "3",
+        },
+        {
+          id: 4,
+          padding: 4,
+          value: "4",
+        },
+        {
+          id: 5,
+          padding: 5,
+          value: "5",
+        },
+      ],
+      fontSizes: [
+        {
+          id: 1,
+          size: "-3",
+          fontSize: 1.33,
+        },
+        {
+          id: 2,
+          size: "-2.90",
+          fontSize: 1.36,
+        },
+        {
+          id: 3,
+          size: "-2",
+          fontSize: 1.63,
+        },
+        {
+          id: 4,
+          size: "-1",
+          fontSize: 1.93,
+        },
+        {
+          id: 5,
+          size: "0",
+          fontSize: 2.1,
+        },
+      ],
+      tabs: [
+        {
+          id: 1,
+          name: "General",
+        },
+        {
+          id: 2,
+          name: "Parsing",
+        },
+        {
+          id: 3,
+          name: "Image",
+        },
+        {
+          id: 4,
+          name: "Filters",
+        },
+      ],
     };
   },
   computed: {

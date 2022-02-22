@@ -41,7 +41,6 @@ export default {
   },
   computed: {
     chatline: function (text) {
-      console.log(this.characterName);
       const input = text.$slots.default[0].text;
       if (input.includes("*")) return "color-emote";
       if (input.includes("says:") && !input.startsWith(this.characterName)) {

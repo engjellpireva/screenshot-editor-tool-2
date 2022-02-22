@@ -7,22 +7,26 @@ import store from "@/store/index.js";
 
 Vue.use(VueRouter);
 
-function hasAccess() {
-  const access = Vue.$cookies.get("access");
+async function hasAccess() {
+  const query = window.location.search;
+  const params = new URLSearchParams(query);
+  const token = String(params.get("token"));
 
-  if (access) {
-    store.state.hasAccess = true;
-  } else {
-    store.state.hasAccess = false;
-  }
-  console.log(access);
+  const response = await fetch(
+    `https://api-screenshot-editor.herokuapp.com/verify/${token}`,
+    {
+      method: "GET",
+    }
+  );
+
+  store.state.hasAccess = response.ok;
 }
 
 const routes = [
   {
     path: "/",
-    beforeEnter(to, from, next) {
-      hasAccess();
+    async beforeEnter(to, from, next) {
+      await hasAccess();
       if (!store.state.hasAccess) {
         next("/not-auth");
       } else {
